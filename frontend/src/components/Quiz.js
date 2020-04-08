@@ -9,8 +9,11 @@ export default class Quiz extends React.Component {
         super(props);
         this.state = {
             rawData: null,
-            cards: null
+            cards: null,
+            curCard: null
         }
+
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     generateCards() {
@@ -34,48 +37,69 @@ export default class Quiz extends React.Component {
         this.setState({cards: cards});
     }
 
+    setRandomCard() {
+        const randomIndex = Math.floor(Math.random() * (this.state.cards.length - 1));
+        this.setState({curCard: this.state.cards[randomIndex]});
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        console.log(e)
+        if (e.key === "Enter" || e.type === "click") {
+            const textBox = document.getElementById("quiz-textbox");
+            const submittedAnswer = textBox.value;
+            textBox.value = "";
+            this.setRandomCard();
+        }
+    }
+
     componentDidMount() {
         fetch(`${API_URL}/get_structured_cards`)
             .then(res => res.json())
             .then(data => {
                 this.setState({rawData: data.data});
                 this.generateCards();
+                this.setRandomCard();
             });
-
     }
 
     render() {
-        if (this.state.cards) {
-            console.log(this.state.cards[0])
-            return (
-                <div>
-                    <FlashCard card={this.state.cards[0]}/>
-                    <Form style={{width: "80vw", margin: "auto", marginTop: "1vh"}}>
-                        <Form.Row>
-                            <Col xs={8}>
-                                <Form.Control type="text" placeholder="Enter your answer" />
-                            </Col>
-                            <Col xs={4}>
-                                <Row>
-                                    <Col xs={6}>
-                                        <Button variant="success" type="submit" style={{float: "left", width: "100%"}}>
-                                            Submit
-                                        </Button>
-                                    </Col>
-                                    <Col xs={6}>
-                                        <Button variant="outline-secondary" type="submit" style={{float: "left", width: "100%"}}>
-                                            Skip
-                                        </Button>
-                                    </Col>
-                                </Row>
-
-                            </Col>
-                        </Form.Row>
-                    </Form>
-                </div>
-            )
-        } else {
+        if (!this.state.curCard) {
             return null;
         }
+
+        return (
+            <div>
+                <FlashCard card={this.state.curCard}/>
+                <Form style={{width: "80vw", margin: "auto", marginTop: "1vh"}}>
+                    <Form.Row>
+                        <Col xs={8}>
+                            <Form.Control id="quiz-textbox" type="text" placeholder="Enter your answer" 
+                             onKeyUp={this.handleSubmit}/>
+                        </Col>
+                        <Col xs={4}>
+                            <Row>
+                                <Col xs={6}>
+                                    <Button variant="success" type="submit" 
+                                     style={{float: "left", width: "100%"}} 
+                                     onClick={this.handleSubmit}
+                                    >
+                                        Submit
+                                    </Button>
+                                </Col>
+                                <Col xs={6}>
+                                    <Button variant="outline-secondary" type="submit" 
+                                     style={{float: "left", width: "100%"}}
+                                    >
+                                        Skip
+                                    </Button>
+                                </Col>
+                            </Row>
+
+                        </Col>
+                    </Form.Row>
+                </Form>
+            </div>
+        )
     }
 }
