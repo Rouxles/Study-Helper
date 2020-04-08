@@ -1,8 +1,10 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 from init_service import init_service
 from analyse_docs import parse_document
 
 SERVER = Flask(__name__)
+CORS(SERVER)
 SERVICE = init_service()
 DOCUMENT_ID = "1oYETJ2JJyspM5ssraM0BD9ha4nCxVCgwf7B8bwyh5BI"
 
