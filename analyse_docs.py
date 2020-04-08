@@ -32,9 +32,10 @@ def depth_first_traversal(parent_element, elements):
                                 .get("textRun").get("content").strip())
 
     # Base elements: elements that are not indented.
-    if ("bullet" not in parent_element.get("paragraph")
-            or "nestingLevel" not in parent_element.get("paragraph")["bullet"]):
+    if "bullet" not in parent_element.get("paragraph"):
         parent_nesting_level = -1
+    elif "nestingLevel" not in parent_element.get("paragraph")["bullet"]:
+        parent_nesting_level = 0
     else:
         parent_nesting_level = parent_element.get("paragraph")["bullet"]["nestingLevel"]
 
@@ -49,7 +50,7 @@ def depth_first_traversal(parent_element, elements):
         if cur_nesting_level == parent_nesting_level + 1:
             file_tree.children.append(depth_first_traversal(element, elements[index + 1::]))
         # All child elements have been found, exit loop.
-        elif cur_nesting_level >= parent_nesting_level:
+        elif cur_nesting_level <= parent_nesting_level:
             break
 
     return file_tree
@@ -59,4 +60,4 @@ if __name__ == "__main__":
     doc = SERVICE.documents().get(documentId=DOCUMENT_ID).execute()
     doc_content = doc.get('body').get('content')
     file_tree = parse_document(doc_content)
-    print(file_tree.children[0].children)
+    print(file_tree.children[0].children[0].children[0].children)
