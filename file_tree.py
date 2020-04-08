@@ -6,5 +6,13 @@ class FileTree:
     def append(self, text: str=None):
         self.children.append(FileTree(text))
 
+    def jsonify(self):
+        ret = {self.text: []}
+
+        for child in self.children:
+            ret[self.text].append(child.jsonify())
+        
+        return ret
+
     def __repr__(self):
-        return self.text if self.text else "None"
+        return self.text
