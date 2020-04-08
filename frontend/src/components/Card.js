@@ -12,7 +12,7 @@ export default class FlashCard extends React.Component {
 
     render() {
         return (
-            <Card style={{margin: "auto", marginTop: "1vh"}}>
+            <Card style={{width: "80vw", margin: "auto", marginTop: "1vh"}}>
                 <Card.Header>{this.props.card.majorTopic}</Card.Header>
                 <Card.Body>
                     <Card.Title>{this.props.card.subTopic}</Card.Title>
