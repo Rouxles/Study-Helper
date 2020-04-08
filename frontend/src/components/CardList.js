@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {CardColumns} from "react-bootstrap"
 
 import FlashCard from "./Card"
 
@@ -44,11 +45,11 @@ export default class CardList extends React.Component {
     render() {
         if (this.state.rawData) {
             return (
-                <div>
+                <CardColumns>
                     {this.generateCards().map(card => (
                         <FlashCard card={card}/>
                     ))}
-                </div>
+                </CardColumns>
             )
         } else {
             return null;
