@@ -1,0 +1,36 @@
+import React from 'react';
+import {Button} from "react-bootstrap";
+import {Card} from "react-bootstrap";
+
+export default class FlashCard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            revealAnswer: false
+        }
+    }
+
+    render() {
+        return (
+            <Card style={{width: '30rem', margin: "auto", marginTop: "1vh"}}>
+                <Card.Header>{this.props.card.majorTopic}</Card.Header>
+                <Card.Body>
+                    <Card.Title>{this.props.card.subTopic}</Card.Title>
+                    <Card.Text>{this.props.card.question}</Card.Text>
+                    {this.state.revealAnswer ? (
+                        <Card.Text style={{color: "green"}}>
+                            {this.props.card.answer}
+                        </Card.Text>
+                    ) : <Card.Text style={{color: "white"}}>
+                            {this.props.card.answer}
+                        </Card.Text>}
+                    <Button variant="primary" 
+                     onClick={() => this.setState({revealAnswer: !this.state.revealAnswer})}
+                    >
+                        Reveal answer
+                    </Button>
+                </Card.Body>
+            </Card>
+        )
+    }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
-import {Card} from "react-bootstrap";
-import {Button} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import FlashCard from "./Card"
 
 const API_URL = "http://0.0.0.0:8000"
 
@@ -46,14 +46,7 @@ export default class CardList extends React.Component {
             return (
                 <div>
                     {this.generateCards().map(card => (
-                        <Card style={{width: '30rem', margin: "auto", marginTop: "1vh"}}>
-                            <Card.Header>{card.majorTopic}</Card.Header>
-                            <Card.Body>
-                                <Card.Title>{card.subTopic}</Card.Title>
-                                <Card.Text>{card.question}</Card.Text>
-                                <Button variant="primary">Reveal answer</Button>
-                            </Card.Body>
-                        </Card>
+                        <FlashCard card={card}/>
                     ))}
                 </div>
             )
