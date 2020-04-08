@@ -17,5 +17,15 @@ def get_cards():
     return file_tree.jsonify()
 
 
+@SERVER.route("/get_structured_cards", methods=["GET"])
+def get_leaf_cards():
+    doc = SERVICE.documents().get(documentId=DOCUMENT_ID).execute()
+    doc_content = doc.get('body').get('content')
+    file_tree = parse_document(doc_content)
+    return jsonify({
+        "data": file_tree.structured_jsonify()
+    })
+
+
 if __name__ == "__main__":
     SERVER.run(host='0.0.0.0', port=8000)
