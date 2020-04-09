@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NavigationBar from "./components/NavigationBar";
 import Quiz from "./components/Quiz"
 import CardList from "./components/CardList"
+import CardSource from "./components/CardSource"
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Router>
         <Route path="/quiz" component={Quiz}/>
         <Route path="/collection" component={CardList}/>
+        <Route path="/source" component={CardSource}/>
       </Router>
     </div>
   );
