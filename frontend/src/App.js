@@ -1,27 +1,18 @@
 import React from 'react';
 import {Switch, BrowserRouter as Router, Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Navbar, Nav} from "react-bootstrap";
-import CardList from "./components/CardList"
+import NavigationBar from "./components/NavigationBar";
 import Quiz from "./components/Quiz"
 
 function App() {
   return (
     <div>    
-      <Navbar bg="dark" variant="dark">
-          <Navbar.Brand>Study Helper</Navbar.Brand>
-            <Nav className="mr-auto">
-                <Nav.Link href="quiz">Quiz</Nav.Link>
-                <Nav.Link href="collection">Flashcard Collection</Nav.Link>
-                <Nav.Link href="source">Flashcard Source</Nav.Link>
-                <Nav.Link>Flashcard Statistics</Nav.Link>
-            </Nav>
-      </Navbar>
+      <NavigationBar/>
 
-    <Router>
-      <Route path="/quiz" component={Quiz}/>
-    </Router>
-  </div>
+      <Router>
+        <Route path="/quiz" component={Quiz}/>
+      </Router>
+    </div>
   );
 }
 
