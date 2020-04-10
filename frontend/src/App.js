@@ -13,8 +13,7 @@ function App() {
 
       <Router>
         <Route path="/quiz" component={Quiz}/>
-        <Route path="/collection" component={CardList}/>
-        <Route path="/source" component={CardSource}/>
+        <Route path="/collection" component={CardSource}/>
       </Router>
     </div>
   );
