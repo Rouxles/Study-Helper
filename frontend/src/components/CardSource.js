@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Form, Button, Table} from "react-bootstrap";
+import CardList from "./CardList";
 
 const API_URL = "http://0.0.0.0:8000"
 
@@ -8,7 +9,8 @@ export default class CardSource extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sources: []
+            sources: [],
+            showCardList: false
         }
 
         this.saveSource = this.saveSource.bind(this);
@@ -81,6 +83,7 @@ export default class CardSource extends React.Component {
                         <tr>
                             <th>Document ID</th>
                             <th>Document Title</th>
+                            <th>Show Cards</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,10 +91,15 @@ export default class CardSource extends React.Component {
                             <tr>
                                 <td>{source.id}</td>
                                 <td>{source.title}</td>
+                                <td>
+                                    <Button onClick={() => this.setState({showCardList: true})}>Open</Button>
+                                </td>
                             </tr>   
                         ))}
                     </tbody>
                 </Table>
+                {this.state.showCardList && 
+                 <CardList closeModal={() => this.setState({showCardList: false})}/>}
             </div>
         )
     }

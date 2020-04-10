@@ -49,7 +49,10 @@ export default class CardList extends React.Component {
                 <Modal
                  size="xl"
                  show={this.state.show}
-                 onHide={() => this.setState({show: false})}
+                 onHide={() => {
+                        this.setState({show: false});
+                        this.props.closeModal();
+                    }}
                 >
                     <Modal.Header closeButton>
                     <Modal.Title>
