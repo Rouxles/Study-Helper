@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Modal} from "react-bootstrap"
 
 import FlashCard from "./Card"
 
@@ -10,7 +11,8 @@ export default class CardList extends React.Component {
         super(props);
         this.state = {
             rawData: null,
-            cards: null
+            cards: null,
+            show: true
         }
     }
 
@@ -44,11 +46,22 @@ export default class CardList extends React.Component {
     render() {
         if (this.state.rawData) {
             return (
-                <div>
-                    {this.generateCards().map(card => (
-                        <FlashCard card={card} className="col-sm-3"/>
-                    ))}
-                </div>
+                <Modal
+                 size="xl"
+                 show={this.state.show}
+                 onHide={() => this.setState({show: false})}
+                >
+                    <Modal.Header closeButton>
+                    <Modal.Title>
+                        Document Source Title
+                    </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {this.generateCards().map(card => (
+                            <FlashCard card={card}/>
+                        ))}
+                    </Modal.Body>
+                </Modal>
             )
         } else {
             return null;
