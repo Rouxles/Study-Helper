@@ -10,7 +10,8 @@ export default class CardSource extends React.Component {
         super(props);
         this.state = {
             sources: [],
-            showCardList: false
+            showCardList: false,
+            curCardSource: null
         }
 
         this.saveSource = this.saveSource.bind(this);
@@ -92,14 +93,28 @@ export default class CardSource extends React.Component {
                                 <td>{source.id}</td>
                                 <td>{source.title}</td>
                                 <td>
-                                    <Button onClick={() => this.setState({showCardList: true})}>Open</Button>
+                                    <Button 
+                                     onClick={() => {
+                                                this.setState({
+                                                    showCardList: true,
+                                                    curSourceId: source.id,
+                                                    curSourceTitle: source.title
+                                                })
+                                                this.setState({curSourceId: source.id})
+                                            }}
+                                    >
+                                        Open
+                                    </Button>
                                 </td>
                             </tr>   
                         ))}
                     </tbody>
                 </Table>
                 {this.state.showCardList && 
-                 <CardList closeModal={() => this.setState({showCardList: false})}/>}
+                 <CardList id={this.state.curSourceId} title={this.state.curSourceTitle}
+                  closeModal={() => this.setState({showCardList: false})}
+                 />
+                }
             </div>
         )
     }

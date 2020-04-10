@@ -38,9 +38,14 @@ export default class CardList extends React.Component {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/get_structured_cards`)
+        fetch(`${API_URL}/get_structured_cards?id=${this.props.id}`)
             .then(res => res.json())
             .then(data => this.setState({rawData: data.data}))
+            .catch(e => {
+                this.setState({show: false});
+                this.props.closeModal();
+                window.alert("Document is not of valid format");
+            });
     }
 
     render() {
@@ -56,7 +61,7 @@ export default class CardList extends React.Component {
                 >
                     <Modal.Header closeButton>
                     <Modal.Title>
-                        Document Source Title
+                        {this.props.title}
                     </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
