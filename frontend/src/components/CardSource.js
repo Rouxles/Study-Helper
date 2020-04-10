@@ -27,13 +27,32 @@ export default class CardSource extends React.Component {
         
         let sessionData = JSON.parse(localStorage.getItem("studyHelper"));
         if (!sessionData) {
-            sessionData = {sources: [{id: sourceInput, tile: "test"}]};
+            sessionData = {sources: [{id: sourceInput, title: null}]};
         } else {
-            sessionData.sources.push({id: sourceInput, tile: "test"});
+            sessionData.sources.push({id: sourceInput, title: null});
         }
 
         localStorage.setItem("studyHelper", JSON.stringify(sessionData));
-        this.setState({sources: sessionData.sources});
+        this.getDocumentTitles()
+    }
+
+    getDocumentTitles() {
+        const data = JSON.parse(localStorage.getItem("studyHelper"));
+        const documentSources = JSON.stringify({data: data.sources});
+        const parameters = {
+            headers: {
+                "content-type": "application/json; charset=UTF-8"
+            },
+            body: documentSources,
+            method: "POST"
+        }
+
+        fetch(`${API_URL}/get_document_titles`, parameters)
+            .then(res => res.json())
+            .then(titledSources => {
+                this.setState({sources: titledSources.data})
+                localStorage.setItem("studyHelper", JSON.stringify({sources: titledSources.data}))
+            })
     }
 
     componentDidMount() {
@@ -41,7 +60,6 @@ export default class CardSource extends React.Component {
     }
 
     render() {
-        console.log(this.state.sources)
         return (
             <div style={{width: "80vw", margin: "auto"}}>
                 <h5 style={{marginTop: "1vh"}}>Generate New Flashcards</h5>

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from init_service import init_service
 from analyse_docs import parse_document
@@ -24,6 +24,22 @@ def get_leaf_cards():
     file_tree = parse_document(doc_content)
     return jsonify({
         "data": file_tree.structured_jsonify()
+    })
+
+
+@SERVER.route("/get_document_titles", methods=["POST"])
+def get_document_titles():
+    sources = request.get_json()
+
+    for source in sources["data"]:
+        try:
+            doc = SERVICE.documents().get(documentId=source["id"]).execute()
+            source["title"] = doc.get("title")
+        except:
+            source["title"] = "No document found"
+
+    return jsonify({
+        "data": sources["data"]
     })
 
 
