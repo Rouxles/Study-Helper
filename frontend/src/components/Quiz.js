@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Button, Col, Row} from "react-bootstrap"
+import {Form, Button, Col, Row, Dropdown} from "react-bootstrap"
 import FlashCard from "./Card";
 
 const API_URL = "http://0.0.0.0:8000"
@@ -10,7 +10,8 @@ export default class Quiz extends React.Component {
         this.state = {
             rawData: null,
             cards: null,
-            curCard: null
+            curCard: null,
+            curCardSource: null,
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -53,8 +54,11 @@ export default class Quiz extends React.Component {
         }
     }
 
-    componentDidMount() {
-        fetch(`${API_URL}/get_structured_cards`)
+    componentDidUpdate() {
+        // TODO: prevent infinite update loop.
+        // Implement quiz generation from specific documentation sources
+
+        fetch(`${API_URL}/get_structured_cards?id=${this.state.curCardSource}`)
             .then(res => res.json())
             .then(data => {
                 this.setState({rawData: data.data});
@@ -64,12 +68,40 @@ export default class Quiz extends React.Component {
     }
 
     render() {
-        if (!this.state.curCard) {
-            return null;
+        const cardSources = JSON.parse(localStorage.getItem("studyHelper")).sources;
+
+        if (!this.state.curCard || !this.state.curCardSource) {
+            return (
+                <Dropdown>
+                    <Dropdown.Toggle variant="primary">
+                        Select Flashcard Set
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        {cardSources.map(source => (
+                            <Dropdown.Item onClick={() => this.setState({curCardSource: source.id})}>
+                                {source.title}
+                            </Dropdown.Item>
+                        ))}
+                    </Dropdown.Menu>
+                </Dropdown>
+            )
         }
 
         return (
             <div>
+                <Dropdown>
+                    <Dropdown.Toggle variant="primary">
+                        Select Flashcard Set
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        {cardSources.map(source => (
+                            <Dropdown.Item onClick={() => this.setState({curCardSource: source.id})}>
+                                {source.title}
+                            </Dropdown.Item>
+                        ))}
+                    </Dropdown.Menu>
+                </Dropdown>
+
                 <FlashCard card={this.state.curCard}/>
                 <Form style={{width: "80vw", margin: "auto", marginTop: "1vh"}}>
                     <Form.Row>
